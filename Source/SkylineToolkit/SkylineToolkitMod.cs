@@ -73,12 +73,15 @@ namespace SkylineToolkit
         {
             get
             {
-                // The following method calls are hooks to initialize our permanent mod and main menu modification
-                InitializePermaMod();
-                InitializeMainMenuMod();
-
                 return "SkylineToolkit";
             }
+        }
+
+        public SkylineToolkitMod()
+        {
+            // The following method calls are hooks to initialize our permanent mod and main menu modification
+            InitializePermaMod();
+            InitializeMainMenuMod();
         }
 
         private void InitializePermaMod()
