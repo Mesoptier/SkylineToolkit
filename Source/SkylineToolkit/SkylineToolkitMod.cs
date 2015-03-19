@@ -1,11 +1,14 @@
-﻿using ICities;
+﻿using ColossalFramework;
+using ICities;
 using SkylineToolkit.PermaMod;
+using System;
 using UnityEngine;
 
 namespace SkylineToolkit
 {
     public class SkylineToolkitMod : IUserMod
     {
+
         private static GameObject permaModGameObject;
 
         private static GameObject mainMenuModGameObject;
@@ -82,6 +85,43 @@ namespace SkylineToolkit
             // The following method calls are hooks to initialize our permanent mod and main menu modification
             InitializePermaMod();
             InitializeMainMenuMod();
+
+            InitializeSettings();
+        }
+
+        private void InitializeSettings()
+        {
+            Log.Debug(GameSettings.FindSettingsFileByName(SkylineToolkitSettings.settingsFile) == null ? "null" : "not null");
+
+            try
+            {
+                SettingsFile[] settingsFiles = new SettingsFile[1];
+                SettingsFile settingsFile = new SettingsFile()
+                {
+                    fileName = SkylineToolkitSettings.settingsFile
+                };
+
+                settingsFiles[0] = settingsFile;
+
+                GameSettings.AddSettingsFile(settingsFiles);
+            }
+            catch (GameSettingsException e)
+            {
+                Log.Debug("GameSettingsException: " + e.ToString());
+            }
+            catch (Exception e)
+            {
+                Log.Debug("Exception: " + e.ToString());
+            }
+
+            Log.Debug(GameSettings.FindSettingsFileByName(SkylineToolkitSettings.settingsFile) == null ? "null" : "not null");
+
+            SkylineToolkitSettings settings = new SkylineToolkitSettings();
+            Log.Debug("" + settings.testBool.value);
+            settings.testBool.value = !settings.testBool.value;
+            Log.Debug("" + settings.testBool.value);
+
+            GameSettings.SaveAll();
         }
 
         private void InitializePermaMod()
